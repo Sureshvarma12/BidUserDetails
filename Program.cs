@@ -1,5 +1,7 @@
+using BidUser.Models;
 using Microsoft.DotNet.Scaffolding.Shared.ProjectModel;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 
 namespace BidUser
 {
@@ -9,8 +11,29 @@ namespace BidUser
         {
             var builder = WebApplication.CreateBuilder(args);
             // Register DbContext with SQL Server
-            builder.Services.AddDbContext<ProjectContext>(options =>
-                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+            builder.Services.AddDbContext<BidUserContext>(options =>
+                options.UseSqlServer(builder.Configuration.GetConnectionString("Default")));
+            builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
+            {
+                // Disable account confirmation requirement on login
+                options.SignIn.RequireConfirmedAccount = false;
+                options.User.RequireUniqueEmail = true;
+
+                // Optional: Customize password settings, etc.
+                options.Password.RequireDigit = true;
+                options.Password.RequiredLength = 6;
+            })
+
+     .AddEntityFrameworkStores<BidUserContext>()
+      .AddDefaultTokenProviders();
+
+            builder.Services.ConfigureApplicationCookie(options =>
+            {
+                options.LoginPath = "/Identity/Account/Login";  // Adjusted to reflect your areas folder
+            });
+            builder.Services.AddRazorPages();
+
+            builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<BidUserContext>();
 
 
             // Add services to the container.
@@ -30,8 +53,15 @@ namespace BidUser
             app.UseStaticFiles();
 
             app.UseRouting();
-
+            app.UseAuthentication();
             app.UseAuthorization();
+            app.MapRazorPages();
+            app.MapGet("/", context =>
+            {
+                context.Response.Redirect("/Identity/Account/Login");
+                return Task.CompletedTask;
+            });
+
 
             app.MapControllerRoute(
                 name: "default",
