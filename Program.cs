@@ -2,6 +2,8 @@ using BidUser.Models;
 using Microsoft.DotNet.Scaffolding.Shared.ProjectModel;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
+using BidUser.Services;
+using Microsoft.AspNetCore.Identity.UI.Services;
 
 namespace BidUser
 {
@@ -32,8 +34,9 @@ namespace BidUser
                 options.LoginPath = "/Identity/Account/Login";  // Adjusted to reflect your areas folder
             });
             builder.Services.AddRazorPages();
+            builder.Services.AddSingleton<IEmailSender,EmailSender>();
 
-            builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<BidUserContext>();
+            //builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<BidUserContext>();
 
 
             // Add services to the container.

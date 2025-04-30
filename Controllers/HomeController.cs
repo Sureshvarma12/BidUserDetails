@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using BidUser.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages;
 
 namespace BidUser.Controllers
 {
@@ -12,9 +13,15 @@ namespace BidUser.Controllers
         {
             _logger = logger;
         }
-
+        
         public IActionResult Index()
         {
+            return View();
+        }
+
+        public IActionResult User()
+        {
+
             return View();
         }
 
