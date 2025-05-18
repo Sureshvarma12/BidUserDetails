@@ -1,0 +1,29 @@
+﻿@model IEnumerable<BidUser.Application.DTOS.InventoryDTO>
+
+<h2>Inventory Items</h2>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Item #</th>
+            <th>Name</th>
+            <th>Cost</th>
+            <th>Bid Amount</th>
+            <th>Sold?</th>
+            <th>Active?</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.ItemNumber</td>
+                <td>@item.Name</td>
+                <td>@item.Cost</td>
+                <td>@item.BidAmount</td>
+                <td>@(item.IsSold == true ? "Yes" : "No")</td>
+                <td>@(item.IsActive == true ? "Yes" : "No")</td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,7 +1,12 @@
 using BidUser.Models;
-using Microsoft.DotNet.Scaffolding.Shared.ProjectModel;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
+using BidUsers.Domain.Interfaces;
+using BidUser.Application.Interfaces;
+using Bidusers.Infrastructure.Repositories;
+using Bidusers.Infrastructure.Services;
+using Bidusers.Infrastructure.Data;
+
 
 namespace BidUser
 {
@@ -11,6 +16,8 @@ namespace BidUser
         {
             var builder = WebApplication.CreateBuilder(args);
             // Register DbContext with SQL Server
+            builder.Services.AddDbContext<Userbidcontext>(options =>
+                options.UseSqlServer(builder.Configuration.GetConnectionString("Default")));
             builder.Services.AddDbContext<BidUserContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("Default")));
             builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
@@ -27,13 +34,19 @@ namespace BidUser
      .AddEntityFrameworkStores<BidUserContext>()
       .AddDefaultTokenProviders();
 
+            // Register Repositories and Services
+            builder.Services.AddScoped<IInventoryRepository, InventoryRepository>();
+            builder.Services.AddScoped<IInventoryService, InventoryService>();
+
+
+            
             builder.Services.ConfigureApplicationCookie(options =>
             {
                 options.LoginPath = "/Identity/Account/Login";  // Adjusted to reflect your areas folder
             });
             builder.Services.AddRazorPages();
 
-            builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<BidUserContext>();
+            //builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<BidUserContext>();
 
 
             // Add services to the container.

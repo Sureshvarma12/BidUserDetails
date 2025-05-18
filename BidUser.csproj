@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
@@ -20,6 +20,12 @@
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.1" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGenerators.Mvc" Version="8.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\BidUser.Application\BidUser.Application.csproj" />
+    <ProjectReference Include="..\BidUsers.Domain\BidUsers.Domain.csproj" />
+    <ProjectReference Include="..\Bidusers.Infrastructure\Bidusers.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>
